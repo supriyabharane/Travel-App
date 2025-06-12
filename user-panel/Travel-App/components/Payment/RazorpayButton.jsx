@@ -1,16 +1,6 @@
 "use client";
 
 import React, { useEffect } from "react";
-import RazorpayButton from "@/components/Payment/RazorpayButton";
-
-const PaymentPage = () => {
-  return (
-    <div>
-      <h1>Book Your Trip</h1>
-      <RazorpayButton amount={5000} />
-    </div>
-  );
-};
 
 const RazorpayButton = ({ amount, onSuccess, onFailure }) => {
   useEffect(() => {
@@ -105,4 +95,4 @@ const RazorpayButton = ({ amount, onSuccess, onFailure }) => {
   );
 };
 
-export default PaymentPage;
+export default RazorpayButton;
