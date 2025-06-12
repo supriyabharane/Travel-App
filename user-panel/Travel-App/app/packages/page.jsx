@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import BlogSection from "@/components/Blog";
 import FixedDepartures from "@/components/FixedDepartures";
@@ -99,4 +99,10 @@ const Packages = () => {
   );
 };
 
-export default Packages;
+export default function PackagesPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Packages />
+    </Suspense>
+  );
+}
