@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+} */
+
+.header-button-shadow{
+  box-shadow: 0px -2px 8px 0px #FFFFFF14 inset;
+
+box-shadow: 0px 0px 0px 1px #FFFFFF0D inset;
+
+}
+
+.ProseMirror-focused{
+  outline: none !important;
+}
+
+.stay-shadow{
+  box-shadow: 0px 4px 6px 0px var(--shadowop1);
+
+box-shadow: 0px 4px 50px 0px var(--shadowop2);
+
+}

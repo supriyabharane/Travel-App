@@ -1,0 +1,3 @@
+{
+  "/api/trips/create/route": "app/api/trips/create/route.js"
+}
