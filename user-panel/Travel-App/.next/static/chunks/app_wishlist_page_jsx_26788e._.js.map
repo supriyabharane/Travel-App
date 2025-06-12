@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/Supriya%20Bharane/Desktop/holiday-booking-platform/user-panel/Travel-App/app/wishlist/page.jsx"],"sourcesContent":["\"use client\";\r\nimport WishlistPage from \"@/components/WishlistPage\";\r\n\r\nexport default function Wishlist() {\r\n  return <WishlistPage />;\r\n}"],"names":[],"mappings":";;;;;;;;;AAAA;;;AAGe,SAAS;IACtB,qBAAO,6LAAC;;;;;AACV;KAFwB"}},
+    {"offset": {"line": 32, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}

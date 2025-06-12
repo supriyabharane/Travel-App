@@ -1,0 +1,90 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Abel&family=Gloria+Hallelujah&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@import 'react-datepicker/dist/react-datepicker.css';
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.triangle {
+  position: absolute;
+  top: 40px;  /* Adjust to align with badge */
+  left: -10px; /* Move outward */
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #010009; /* Black Triangle */
+  transform: rotate(45deg); /* Rotates to match your design */
+}
+
+.swiper{
+  padding: 0 15px !important;
+}
+
+.bg-pricing{
+  background: linear-gradient(90.1deg, rgba(255, 49, 49, 0.5) 0.18%, rgba(255, 145, 77, 0.5) 97.7%);
+
+}
+
+
+/* .ticket-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.ticket-border::before,
+.ticket-border::after {
+  content: "";
+  position: absolute;
+  width: 25px; 
+  height: 25px;
+  background-color: white;
+  border-radius: 50%;
+  border-top: 1px dashed #FF3131; 
+  border-bottom: 1px dashed #FF3131; 
+  z-index: 50;
+}
+
+.ticket-border::before {
+  top: -15px; 
+  left: 13.5%;
+  transform: translateX(-50%);
+}
+
+.ticket-border::after {
+  bottom: -15px; 
+  left: 13.5%;
+  transform: translateX(-50%);
+} */
+
+.ticket-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top Circle */
+.ticket-card::before,
+.ticket-card::after {
+  content: "";
+  position: absolute;
+  left: 11%;
+  width: 30px;
+  height: 30px;
+  background: white;
+  border: 1px dashed #ff3131;
+  border-radius: 50%;
+}
+
+.ticket-card::before {
+  top: -15px;
+  z-index: 50;
+}
+
+/* Bottom Circle */
+.ticket-card::after {
+  bottom: -15px;
+  z-index: 50;
+}

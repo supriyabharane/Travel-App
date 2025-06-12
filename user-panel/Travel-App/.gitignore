@@ -1,0 +1,5 @@
+#Dependencies
+node_modules/
+# Ignore all zip files
+*.zip
+public/images/*.zip
