@@ -437,29 +437,128 @@ var _s = __turbopack_refresh__.signature();
 ;
 ;
 ;
-// Static data for Fixed Departures and Speciality Tours
+// Add categories and price to each trip
+const tripCategories = [
+    "Beaches",
+    "Mountains",
+    "Adventure",
+    "Wildlife",
+    "Cultural",
+    "City",
+    "Cruise",
+    "Desert",
+    "Polar"
+];
+// Add mock ratings and reviews to each trip (SSR-safe)
+const fixedRatings = [
+    4.8,
+    4.5,
+    4.7,
+    4.6,
+    4.9,
+    4.4,
+    4.3,
+    4.2,
+    4.8
+];
+const fixedReviews = [
+    32,
+    45,
+    28,
+    51,
+    39,
+    22,
+    18,
+    27,
+    34
+];
 const fixedDepartures = [
     {
         id: 1,
         title: "ICELAND.",
         image: "/images/iceland.jpg",
         discount: "Up to 50% off",
-        details: "Flight + 4 nights"
+        details: "Flight + 4 nights",
+        category: "Polar",
+        price: 120000
     },
     {
         id: 2,
         title: "Explore our Seoul.",
         image: "/images/seoul.jpg",
-        details: "200 hotels, 345 local flights and 234 bus providers"
+        details: "200 hotels, 345 local flights and 234 bus providers",
+        category: "City",
+        price: 90000
     },
     {
         id: 3,
         title: "CUBA.",
         image: "/images/cuba.jpg",
         discount: "Up to 50% off",
-        details: "Flight + 4 nights"
+        details: "Flight + 4 nights",
+        category: "Beaches",
+        price: 85000
+    },
+    {
+        id: 4,
+        title: "BALI.",
+        image: "/images/bali.jpg",
+        discount: "Up to 40% off",
+        details: "Flight + 5 nights",
+        category: "Beaches",
+        price: 95000
+    },
+    {
+        id: 5,
+        title: "JAPAN SPRING.",
+        image: "/images/japan.jpg",
+        discount: "Up to 30% off",
+        details: "Flight + 8 nights",
+        category: "Cultural",
+        price: 110000
+    },
+    {
+        id: 6,
+        title: "EGYPT MYSTERY.",
+        image: "/images/egypt.jpg",
+        discount: "Up to 35% off",
+        details: "Flight + 6 nights",
+        category: "Desert",
+        price: 105000
+    },
+    {
+        id: 7,
+        title: "PATAGONIA ADVENTURE.",
+        image: "/images/patagonia.jpg",
+        discount: "Up to 25% off",
+        details: "Flight + 9 nights",
+        category: "Mountains",
+        price: 130000
+    },
+    {
+        id: 8,
+        title: "SOUTH AFRICA SAFARI.",
+        image: "/images/southafrica.jpg",
+        discount: "Up to 20% off",
+        details: "Flight + 7 nights",
+        category: "Wildlife",
+        price: 115000
+    },
+    {
+        id: 9,
+        title: "ANTARCTICA EXPEDITION.",
+        image: "/images/antarctica.jpg",
+        discount: "Up to 15% off",
+        details: "Flight + 12 nights",
+        category: "Polar",
+        price: 200000
     }
 ];
+// Attach static ratings and reviews
+fixedDepartures.forEach((trip, idx)=>{
+    trip.rating = fixedRatings[idx] || 4.5;
+    trip.reviews = fixedReviews[idx] || 20;
+});
 const specialityTours = [
     {
         id: 1,
@@ -480,12 +579,62 @@ const specialityTours = [
         image: "/images/cuba.jpg",
         discount: "Up to 50% off",
         details: "Flight + 4 nights"
+    },
+    {
+        id: 4,
+        title: "BALI.",
+        image: "/images/bali.jpg",
+        discount: "Up to 40% off",
+        details: "Flight + 5 nights"
+    },
+    {
+        id: 5,
+        title: "JAPAN SPRING.",
+        image: "/images/japan.jpg",
+        discount: "Up to 30% off",
+        details: "Flight + 8 nights"
+    },
+    {
+        id: 6,
+        title: "EGYPT MYSTERY.",
+        image: "/images/egypt.jpg",
+        discount: "Up to 35% off",
+        details: "Flight + 6 nights"
+    },
+    {
+        id: 7,
+        title: "PATAGONIA ADVENTURE.",
+        image: "/images/patagonia.jpg",
+        discount: "Up to 25% off",
+        details: "Flight + 9 nights"
+    },
+    {
+        id: 8,
+        title: "SOUTH AFRICA SAFARI.",
+        image: "/images/southafrica.jpg",
+        discount: "Up to 20% off",
+        details: "Flight + 7 nights"
+    },
+    {
+        id: 9,
+        title: "ANTARCTICA EXPEDITION.",
+        image: "/images/antarctica.jpg",
+        discount: "Up to 15% off",
+        details: "Flight + 12 nights"
     }
 ];
 function FixedDepartures() {
     _s();
     const swiperRef1 = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const swiperRef2 = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const [selectedCategory, setSelectedCategory] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [sortOrder, setSortOrder] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    // Filtering and sorting logic
+    const filteredTrips = fixedDepartures.filter((trip)=>!selectedCategory || trip.category === selectedCategory).sort((a, b)=>{
+        if (sortOrder === "asc") return a.price - b.price;
+        if (sortOrder === "desc") return b.price - a.price;
+        return 0;
+    });
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         className: "max-w-7xl mx-auto py-16 px-4 bg-gradient-to-br from-[#f8fafc] via-[#f3e8ff] to-[#e0e7ff] rounded-3xl shadow-2xl border border-blue-100 overflow-visible",
         children: [
@@ -493,7 +642,91 @@ function FixedDepartures() {
                 className: "absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-[#FF507A]/30 to-[#6C63FF]/20 rounded-full blur-3xl opacity-60 z-0"
             }, void 0, false, {
                 fileName: "[project]/components/FixedDepartures.jsx",
-                lineNumber: 63,
+                lineNumber: 198,
+                columnNumber: 4
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex flex-wrap gap-4 mb-8 items-center justify-between z-20 relative",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex gap-2 flex-wrap",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                            className: "px-4 py-2 rounded-lg border border-blue-200 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FF507A]",
+                            value: selectedCategory,
+                            onChange: (e)=>setSelectedCategory(e.target.value),
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                    value: "",
+                                    children: "All Categories"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/FixedDepartures.jsx",
+                                    lineNumber: 207,
+                                    columnNumber: 7
+                                }, this),
+                                tripCategories.map((cat)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                        value: cat,
+                                        children: cat
+                                    }, cat, false, {
+                                        fileName: "[project]/components/FixedDepartures.jsx",
+                                        lineNumber: 209,
+                                        columnNumber: 8
+                                    }, this))
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/FixedDepartures.jsx",
+                            lineNumber: 202,
+                            columnNumber: 6
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/components/FixedDepartures.jsx",
+                        lineNumber: 201,
+                        columnNumber: 5
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                            className: "px-4 py-2 rounded-lg border border-blue-200 bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FF507A]",
+                            value: sortOrder,
+                            onChange: (e)=>setSortOrder(e.target.value),
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                    value: "",
+                                    children: "Sort by Price"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/FixedDepartures.jsx",
+                                    lineNumber: 221,
+                                    columnNumber: 7
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                    value: "asc",
+                                    children: "Price: Low to High"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/FixedDepartures.jsx",
+                                    lineNumber: 222,
+                                    columnNumber: 7
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                    value: "desc",
+                                    children: "Price: High to Low"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/FixedDepartures.jsx",
+                                    lineNumber: 223,
+                                    columnNumber: 7
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/FixedDepartures.jsx",
+                            lineNumber: 216,
+                            columnNumber: 6
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/components/FixedDepartures.jsx",
+                        lineNumber: 215,
+                        columnNumber: 5
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/components/FixedDepartures.jsx",
+                lineNumber: 200,
                 columnNumber: 4
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -510,7 +743,7 @@ function FixedDepartures() {
                                         children: "Fixed Departures"
                                     }, void 0, false, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 68,
+                                        lineNumber: 231,
                                         columnNumber: 7
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -518,20 +751,20 @@ function FixedDepartures() {
                                         children: "Handpicked Getaways for Every Traveler"
                                     }, void 0, false, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 71,
+                                        lineNumber: 234,
                                         columnNumber: 7
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "h-1 w-24 bg-gradient-to-r from-[#FF507A] to-[#FF914D] rounded-full mt-2"
                                     }, void 0, false, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 74,
+                                        lineNumber: 237,
                                         columnNumber: 7
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/FixedDepartures.jsx",
-                                lineNumber: 67,
+                                lineNumber: 230,
                                 columnNumber: 6
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -542,12 +775,12 @@ function FixedDepartures() {
                                         onClick: ()=>swiperRef1.current?.slidePrev(),
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FaChevronLeft"], {}, void 0, false, {
                                             fileName: "[project]/components/FixedDepartures.jsx",
-                                            lineNumber: 81,
+                                            lineNumber: 244,
                                             columnNumber: 8
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 77,
+                                        lineNumber: 240,
                                         columnNumber: 7
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -555,29 +788,29 @@ function FixedDepartures() {
                                         onClick: ()=>swiperRef1.current?.slideNext(),
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FaChevronRight"], {}, void 0, false, {
                                             fileName: "[project]/components/FixedDepartures.jsx",
-                                            lineNumber: 87,
+                                            lineNumber: 250,
                                             columnNumber: 8
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 83,
+                                        lineNumber: 246,
                                         columnNumber: 7
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/FixedDepartures.jsx",
-                                lineNumber: 76,
+                                lineNumber: 239,
                                 columnNumber: 6
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/FixedDepartures.jsx",
-                        lineNumber: 66,
+                        lineNumber: 229,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "relative sm:pt-32 pt-16",
-                        children: fixedDepartures.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swiper$2f$swiper$2d$react$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Swiper"], {
+                        children: filteredTrips.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swiper$2f$swiper$2d$react$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Swiper"], {
                             slidesPerView: 1,
                             spaceBetween: 24,
                             breakpoints: {
@@ -596,26 +829,44 @@ function FixedDepartures() {
                             ],
                             onSwiper: (swiper)=>swiperRef1.current = swiper,
                             className: "mt-8",
-                            children: fixedDepartures.map((tour)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swiper$2f$swiper$2d$react$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SwiperSlide"], {
+                            children: filteredTrips.map((tour)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swiper$2f$swiper$2d$react$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SwiperSlide"], {
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "relative rounded-3xl overflow-hidden shadow-xl group transition hover:shadow-2xl bg-white border border-gray-100 hover:-translate-y-2 hover:scale-105 duration-300",
+                                        className: "relative rounded-3xl overflow-hidden shadow-2xl group transition hover:shadow-3xl bg-gradient-to-br from-[#f8fafc] via-[#f3e8ff] to-[#e0e7ff] border border-blue-100 hover:-translate-y-2 hover:scale-105 duration-300",
                                         children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swiper$2f$swiper$2d$react$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Swiper"], {
+                                                slidesPerView: 1,
+                                                navigation: true,
+                                                className: "w-full h-64 rounded-3xl shadow-xl",
+                                                children: [
+                                                    tour.image,
+                                                    ...tour.images || []
+                                                ].map((img, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swiper$2f$swiper$2d$react$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SwiperSlide"], {
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                                            src: img,
+                                                            alt: tour.title,
+                                                            className: "w-full h-64 object-cover rounded-3xl"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/components/FixedDepartures.jsx",
+                                                            lineNumber: 279,
+                                                            columnNumber: 14
+                                                        }, this)
+                                                    }, idx, false, {
+                                                        fileName: "[project]/components/FixedDepartures.jsx",
+                                                        lineNumber: 278,
+                                                        columnNumber: 13
+                                                    }, this))
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/FixedDepartures.jsx",
+                                                lineNumber: 272,
+                                                columnNumber: 11
+                                            }, this),
                                             tour.discount && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "absolute top-3 left-3 bg-gradient-to-r from-[#FF507A] to-[#FF914D] text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg border border-white/30 group-hover:scale-110 transition-transform",
+                                                className: "absolute top-3 right-3 bg-gradient-to-r from-[#FF507A] to-[#FF914D] text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg border border-white/30 group-hover:scale-110 transition-transform z-10",
                                                 children: tour.discount
                                             }, void 0, false, {
                                                 fileName: "[project]/components/FixedDepartures.jsx",
-                                                lineNumber: 109,
+                                                lineNumber: 288,
                                                 columnNumber: 12
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                                                src: tour.image,
-                                                alt: tour.title,
-                                                className: "w-full h-64 object-cover rounded-3xl group-hover:scale-105 transition-transform duration-300"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/FixedDepartures.jsx",
-                                                lineNumber: 113,
-                                                columnNumber: 11
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/70 via-black/10 to-transparent",
@@ -625,7 +876,7 @@ function FixedDepartures() {
                                                         children: tour.title
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                                        lineNumber: 119,
+                                                        lineNumber: 293,
                                                         columnNumber: 12
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -637,7 +888,7 @@ function FixedDepartures() {
                                                                 className: "w-5 h-5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/FixedDepartures.jsx",
-                                                                lineNumber: 123,
+                                                                lineNumber: 297,
                                                                 columnNumber: 13
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -645,7 +896,7 @@ function FixedDepartures() {
                                                                 children: "+"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/FixedDepartures.jsx",
-                                                                lineNumber: 128,
+                                                                lineNumber: 302,
                                                                 columnNumber: 13
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
@@ -654,13 +905,61 @@ function FixedDepartures() {
                                                                 className: "w-5 h-5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/FixedDepartures.jsx",
-                                                                lineNumber: 131,
+                                                                lineNumber: 305,
                                                                 columnNumber: 13
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                                        lineNumber: 122,
+                                                        lineNumber: 296,
+                                                        columnNumber: 12
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex items-center gap-3 mb-2",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "flex items-center text-yellow-400 font-bold text-lg",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                                        xmlns: "http://www.w3.org/2000/svg",
+                                                                        fill: "currentColor",
+                                                                        viewBox: "0 0 20 20",
+                                                                        className: "w-5 h-5 mr-1",
+                                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                                            d: "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.38-2.454a1 1 0 00-1.175 0l-3.38 2.454c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.38-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/components/FixedDepartures.jsx",
+                                                                            lineNumber: 319,
+                                                                            columnNumber: 15
+                                                                        }, this)
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/FixedDepartures.jsx",
+                                                                        lineNumber: 313,
+                                                                        columnNumber: 14
+                                                                    }, this),
+                                                                    tour.rating
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/components/FixedDepartures.jsx",
+                                                                lineNumber: 312,
+                                                                columnNumber: 13
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "text-white text-sm",
+                                                                children: [
+                                                                    "(",
+                                                                    tour.reviews,
+                                                                    " reviews)"
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/components/FixedDepartures.jsx",
+                                                                lineNumber: 323,
+                                                                columnNumber: 13
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/components/FixedDepartures.jsx",
+                                                        lineNumber: 311,
                                                         columnNumber: 12
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -668,7 +967,15 @@ function FixedDepartures() {
                                                         children: tour.details
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                                        lineNumber: 137,
+                                                        lineNumber: 328,
+                                                        columnNumber: 12
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        className: "border border-white text-white rounded px-5 py-1 font-semibold bg-black/30 hover:bg-white hover:text-black transition w-fit shadow-lg mt-2",
+                                                        children: "Write a Review"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/FixedDepartures.jsx",
+                                                        lineNumber: 331,
                                                         columnNumber: 12
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -676,54 +983,54 @@ function FixedDepartures() {
                                                         children: "Explore"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                                        lineNumber: 140,
+                                                        lineNumber: 334,
                                                         columnNumber: 12
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/FixedDepartures.jsx",
-                                                lineNumber: 118,
+                                                lineNumber: 292,
                                                 columnNumber: 11
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 107,
+                                        lineNumber: 270,
                                         columnNumber: 10
                                     }, this)
                                 }, tour.id, false, {
                                     fileName: "[project]/components/FixedDepartures.jsx",
-                                    lineNumber: 106,
+                                    lineNumber: 269,
                                     columnNumber: 9
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/components/FixedDepartures.jsx",
-                            lineNumber: 93,
+                            lineNumber: 256,
                             columnNumber: 7
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "text-center py-10",
                             children: "No departures available"
                         }, void 0, false, {
                             fileName: "[project]/components/FixedDepartures.jsx",
-                            lineNumber: 149,
+                            lineNumber: 343,
                             columnNumber: 7
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/FixedDepartures.jsx",
-                        lineNumber: 91,
+                        lineNumber: 254,
                         columnNumber: 5
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/FixedDepartures.jsx",
-                lineNumber: 65,
+                lineNumber: 228,
                 columnNumber: 4
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "w-full h-1 mt-2 mb-2 bg-gradient-to-r from-[#FF507A]/10 via-[#6C63FF]/10 to-[#FF914D]/10 rounded-full blur-md"
             }, void 0, false, {
                 fileName: "[project]/components/FixedDepartures.jsx",
-                lineNumber: 155,
+                lineNumber: 349,
                 columnNumber: 4
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -740,7 +1047,7 @@ function FixedDepartures() {
                                         children: "Speciality Tours"
                                     }, void 0, false, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 161,
+                                        lineNumber: 355,
                                         columnNumber: 7
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -748,20 +1055,20 @@ function FixedDepartures() {
                                         children: "Handpicked Getaways for Every Traveler"
                                     }, void 0, false, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 164,
+                                        lineNumber: 358,
                                         columnNumber: 7
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "h-1 w-24 bg-gradient-to-r from-[#FF507A] to-[#FF914D] rounded-full mt-2"
                                     }, void 0, false, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 167,
+                                        lineNumber: 361,
                                         columnNumber: 7
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/FixedDepartures.jsx",
-                                lineNumber: 160,
+                                lineNumber: 354,
                                 columnNumber: 6
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -772,12 +1079,12 @@ function FixedDepartures() {
                                         onClick: ()=>swiperRef2.current?.slidePrev(),
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FaChevronLeft"], {}, void 0, false, {
                                             fileName: "[project]/components/FixedDepartures.jsx",
-                                            lineNumber: 174,
+                                            lineNumber: 368,
                                             columnNumber: 8
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 170,
+                                        lineNumber: 364,
                                         columnNumber: 7
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -785,24 +1092,24 @@ function FixedDepartures() {
                                         onClick: ()=>swiperRef2.current?.slideNext(),
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FaChevronRight"], {}, void 0, false, {
                                             fileName: "[project]/components/FixedDepartures.jsx",
-                                            lineNumber: 180,
+                                            lineNumber: 374,
                                             columnNumber: 8
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 176,
+                                        lineNumber: 370,
                                         columnNumber: 7
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/FixedDepartures.jsx",
-                                lineNumber: 169,
+                                lineNumber: 363,
                                 columnNumber: 6
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/FixedDepartures.jsx",
-                        lineNumber: 159,
+                        lineNumber: 353,
                         columnNumber: 5
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -834,55 +1141,135 @@ function FixedDepartures() {
                             navigation: false,
                             children: specialityTours.map((tour)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swiper$2f$swiper$2d$react$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SwiperSlide"], {
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "relative rounded-3xl overflow-hidden shadow-xl group transition hover:shadow-2xl bg-white border border-gray-100 hover:-translate-y-2 hover:scale-105 duration-300",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$SpecialityTourCard$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                            tour: tour
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/FixedDepartures.jsx",
-                                            lineNumber: 203,
-                                            columnNumber: 11
-                                        }, this)
-                                    }, void 0, false, {
+                                        className: "relative rounded-3xl overflow-hidden shadow-xl group transition hover:shadow-2xl bg-white/80 backdrop-blur-md border border-blue-100 hover:-translate-y-2 hover:scale-105 duration-300",
+                                        children: [
+                                            tour.discount && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "absolute top-3 right-3 bg-gradient-to-r from-[#FF507A] to-[#FF914D] text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg border border-white/30 group-hover:scale-110 transition-transform",
+                                                children: tour.discount
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/FixedDepartures.jsx",
+                                                lineNumber: 398,
+                                                columnNumber: 12
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                                src: tour.image,
+                                                alt: tour.title,
+                                                className: "w-full h-64 object-cover rounded-3xl group-hover:scale-105 transition-transform duration-300"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/FixedDepartures.jsx",
+                                                lineNumber: 402,
+                                                columnNumber: 11
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/70 via-black/10 to-transparent",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                        className: "font-bold text-3xl mb-2 text-white drop-shadow-lg",
+                                                        children: tour.title
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/FixedDepartures.jsx",
+                                                        lineNumber: 408,
+                                                        columnNumber: 12
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex items-center gap-2 mb-4",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                                                src: "/icons/flight.png",
+                                                                alt: "flight",
+                                                                className: "w-5 h-5"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/FixedDepartures.jsx",
+                                                                lineNumber: 412,
+                                                                columnNumber: 13
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "text-white text-lg font-bold",
+                                                                children: "+"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/FixedDepartures.jsx",
+                                                                lineNumber: 417,
+                                                                columnNumber: 13
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                                                src: "/icons/hotel.png",
+                                                                alt: "Hotel",
+                                                                className: "w-5 h-5"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/FixedDepartures.jsx",
+                                                                lineNumber: 420,
+                                                                columnNumber: 13
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/components/FixedDepartures.jsx",
+                                                        lineNumber: 411,
+                                                        columnNumber: 12
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-white text-sm mb-2",
+                                                        children: tour.details
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/FixedDepartures.jsx",
+                                                        lineNumber: 426,
+                                                        columnNumber: 12
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        className: "border border-white text-white rounded px-5 py-1 font-semibold bg-black/30 hover:bg-white hover:text-black transition w-fit shadow-lg",
+                                                        children: "Explore"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/FixedDepartures.jsx",
+                                                        lineNumber: 429,
+                                                        columnNumber: 12
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/components/FixedDepartures.jsx",
+                                                lineNumber: 407,
+                                                columnNumber: 11
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/components/FixedDepartures.jsx",
-                                        lineNumber: 202,
+                                        lineNumber: 396,
                                         columnNumber: 10
                                     }, this)
                                 }, tour.id, false, {
                                     fileName: "[project]/components/FixedDepartures.jsx",
-                                    lineNumber: 201,
+                                    lineNumber: 395,
                                     columnNumber: 9
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/components/FixedDepartures.jsx",
-                            lineNumber: 186,
+                            lineNumber: 380,
                             columnNumber: 7
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "text-center py-10",
                             children: "No tours available"
                         }, void 0, false, {
                             fileName: "[project]/components/FixedDepartures.jsx",
-                            lineNumber: 209,
+                            lineNumber: 438,
                             columnNumber: 7
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/FixedDepartures.jsx",
-                        lineNumber: 184,
+                        lineNumber: 378,
                         columnNumber: 5
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/FixedDepartures.jsx",
-                lineNumber: 158,
+                lineNumber: 352,
                 columnNumber: 4
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/FixedDepartures.jsx",
-        lineNumber: 61,
+        lineNumber: 196,
         columnNumber: 3
     }, this);
 }
-_s(FixedDepartures, "+517A+YC1Rt0vPqAVK7wxUEmpto=");
+_s(FixedDepartures, "y0vUhwEuHSytr/n7dpaN0+Jx6BA=");
 _c = FixedDepartures;
 var _c;
 __turbopack_refresh__.register(_c, "FixedDepartures");
@@ -2403,7 +2790,7 @@ function HorizontalPackageCard({ trip }) {
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-semibold",
+                                className: "bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold",
                                 children: "₹ 150,000 (4N)"
                             }, void 0, false, {
                                 fileName: "[project]/components/HorizontalPackageCard.jsx",
@@ -3134,7 +3521,7 @@ function TopPackages({ trips = [], title = "Top Packages", subtitle = "Handpicke
                             columnNumber: 6
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "grid sm:grid-cols-2 md:grid-cols-4 gap-8 bg-gradient-to-r from-blue-50 to-purple-100 p-10 rounded-3xl shadow-2xl border border-blue-100",
+                            className: "grid sm:grid-cols-2 md:grid-cols-4 gap-8 bg-white p-10 rounded-3xl shadow-2xl border border-blue-100",
                             children: whyChooseUsItems.map((item, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "flex flex-col items-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition group border border-gray-100 hover:-translate-y-2 hover:scale-105 duration-300",
                                     children: [
@@ -3204,7 +3591,7 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_import__, s: __turbopack_esm__, v: __turbopack_export_value__, n: __turbopack_export_namespace__, c: __turbopack_cache__, M: __turbopack_modules__, l: __turbopack_load__, j: __turbopack_dynamic__, P: __turbopack_resolve_absolute_path__, U: __turbopack_relative_url__, R: __turbopack_resolve_module_id_path__, b: __turbopack_worker_blob_url__, g: global, __dirname, k: __turbopack_refresh__, m: module, z: __turbopack_require_stub__ } = __turbopack_context__;
 {
 __turbopack_esm__({
-    "default": (()=>__TURBOPACK__default__export__)
+    "default": (()=>PackagesPage)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
@@ -3408,9 +3795,30 @@ _s(Packages, "bx6HzCjlT3fOcClW4euVVLmuLQE=", false, function() {
     ];
 });
 _c = Packages;
-const __TURBOPACK__default__export__ = Packages;
-var _c;
+function PackagesPage() {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Suspense"], {
+        fallback: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            children: "Loading..."
+        }, void 0, false, {
+            fileName: "[project]/app/packages/page.jsx",
+            lineNumber: 104,
+            columnNumber: 25
+        }, void 0),
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Packages, {}, void 0, false, {
+            fileName: "[project]/app/packages/page.jsx",
+            lineNumber: 105,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/packages/page.jsx",
+        lineNumber: 104,
+        columnNumber: 5
+    }, this);
+}
+_c1 = PackagesPage;
+var _c, _c1;
 __turbopack_refresh__.register(_c, "Packages");
+__turbopack_refresh__.register(_c1, "PackagesPage");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_refresh__.registerExports(module, globalThis.$RefreshHelpers$);
 }

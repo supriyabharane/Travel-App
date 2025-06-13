@@ -18,7 +18,7 @@ export default function HorizontalPackageCard({ trip }) {
         {/* Price badges */}
         <div className="flex gap-3 mb-2">
           <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">₹ 100,000 (3N)</span>
-          <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-semibold">₹ 150,000 (4N)</span>
+          <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">₹ 150,000 (4N)</span>
           <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-semibold">₹ 200,000 (5N)</span>
         </div>
         <div className="text-xs text-gray-500 mb-2">

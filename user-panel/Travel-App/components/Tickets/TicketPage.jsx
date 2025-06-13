@@ -173,7 +173,7 @@ const TicketPage = () => {
               </button>
               {/* Payment Button */}
               <button
-                className="mt-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md ml-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                className="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md ml-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 onClick={() => setShowPaymentModal(true)}
                 aria-label="Pay now"
               >
@@ -287,7 +287,7 @@ const TicketPage = () => {
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
                 disabled={paymentLoading}
                 aria-label="Submit payment"
               >

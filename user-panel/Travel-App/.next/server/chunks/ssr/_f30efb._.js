@@ -344,7 +344,8 @@ const blogContent = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project
     lineNumber: 5,
     columnNumber: 3
 }, this);
-async function BlogDetailPage({ params }) {
+async function BlogDetailPage(props) {
+    const params = await props.params;
     const { id } = params;
     // Blog post data for title, image, intro
     const blogPosts = [
@@ -373,7 +374,7 @@ async function BlogDetailPage({ params }) {
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Navbar$2e$jsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/app/blog/[id]/page.jsx",
-                    lineNumber: 127,
+                    lineNumber: 128,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -381,18 +382,18 @@ async function BlogDetailPage({ params }) {
                     children: "Blog not found."
                 }, void 0, false, {
                     fileName: "[project]/app/blog/[id]/page.jsx",
-                    lineNumber: 128,
+                    lineNumber: 129,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Footer$2e$jsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/app/blog/[id]/page.jsx",
-                    lineNumber: 129,
+                    lineNumber: 130,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/blog/[id]/page.jsx",
-            lineNumber: 126,
+            lineNumber: 127,
             columnNumber: 7
         }, this);
     }
@@ -400,7 +401,7 @@ async function BlogDetailPage({ params }) {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Navbar$2e$jsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/app/blog/[id]/page.jsx",
-                lineNumber: 136,
+                lineNumber: 137,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -411,7 +412,7 @@ async function BlogDetailPage({ params }) {
                         children: post.title
                     }, void 0, false, {
                         fileName: "[project]/app/blog/[id]/page.jsx",
-                        lineNumber: 138,
+                        lineNumber: 139,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -419,7 +420,7 @@ async function BlogDetailPage({ params }) {
                         children: post.intro
                     }, void 0, false, {
                         fileName: "[project]/app/blog/[id]/page.jsx",
-                        lineNumber: 139,
+                        lineNumber: 140,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
@@ -428,25 +429,25 @@ async function BlogDetailPage({ params }) {
                         className: "w-full rounded-xl mb-8 bg-black"
                     }, void 0, false, {
                         fileName: "[project]/app/blog/[id]/page.jsx",
-                        lineNumber: 140,
+                        lineNumber: 141,
                         columnNumber: 9
                     }, this),
                     blogContent
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/blog/[id]/page.jsx",
-                lineNumber: 137,
+                lineNumber: 138,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Footer$2e$jsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/app/blog/[id]/page.jsx",
-                lineNumber: 143,
+                lineNumber: 144,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/blog/[id]/page.jsx",
-        lineNumber: 135,
+        lineNumber: 136,
         columnNumber: 5
     }, this);
 }

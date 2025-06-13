@@ -33,7 +33,7 @@ const Overview = ({ trip }) => {
       description: "Easily and securely log in with biometric features, and facial recognition."
     },
     {
-      icon: <FaLock className="w-6 h-6 text-purple-500" />,
+      icon: <FaLock className="w-6 h-6 text-blue-500" />,
       title: "End-to-end encryption",
       description: "By encryption, protecting your data from unauthorized access."
     }

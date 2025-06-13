@@ -38,6 +38,13 @@ const RazorpayButton = ({ amount, onSuccess, onFailure }) => {
         body: JSON.stringify({ amount, currency: "INR" }),
       });
 
+      if (!response.ok) {
+        // Show error if backend did not return 200
+        alert("Payment could not be initiated. Please try again later.");
+        if (onFailure) onFailure();
+        return;
+      }
+
       const order = await response.json();
 
       const options = {

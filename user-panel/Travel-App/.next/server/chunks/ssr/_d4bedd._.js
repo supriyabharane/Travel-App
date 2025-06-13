@@ -1375,7 +1375,7 @@ function TopDestinations({ trips = [], title = "Top Packages", subtitle = "Handp
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "grid sm:grid-cols-2 md:grid-cols-4 gap-8 bg-gradient-to-r from-blue-50 to-purple-100 p-10 rounded-3xl shadow-2xl border border-blue-100",
+                            className: "grid sm:grid-cols-2 md:grid-cols-4 gap-8 bg-white p-10 rounded-3xl shadow-2xl border border-blue-100",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "flex flex-col items-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition group border border-gray-100 hover:-translate-y-2 hover:scale-105 duration-300",

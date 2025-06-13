@@ -2,7 +2,8 @@ import Navbar from "@/components/Navbar";
 import HomeHeroSection from "@/components/HomeHeroSection";
 import TopDestinations from "@/components/TopDestinations";
 import FixedDepartures from "@/components/FixedDepartures";
-import ReviewsAndWall from "@/components/ReviewsAndWall";
+import ReviewsSection from "@/components/ReviewsSection";
+import WallOfLoveSection from "@/components/WallOfLoveSection";
 import BlogSection from "@/components/Blog";
 import Footer from "@/components/Footer";
 
@@ -71,10 +72,11 @@ export default function Home() {
       <HomeHeroSection />
       <TopDestinations trips={trips} />
       <FixedDepartures />
-      <ReviewsAndWall />
+      <ReviewsSection />
+      <WallOfLoveSection />
       <BlogSection />
       <Footer />
-      <section className="bg-gradient-to-r from-blue-500 to-purple-500 text-white py-12">
+      <section className="bg-white text-black py-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-4">Discover Your Next Adventure</h2>
           <p className="text-lg mb-6">
@@ -88,7 +90,7 @@ export default function Home() {
           </a>
         </div>
       </section>
-      <section className="bg-gradient-to-r from-blue-500 to-purple-500 text-white py-12">
+      <section className="bg-white text-black py-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-4">Why Choose Us?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

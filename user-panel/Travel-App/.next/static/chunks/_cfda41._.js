@@ -1120,7 +1120,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var _s = __turbopack_refresh__.signature();
 "use client";
 ;
-const RazorpayButton = ({ amount })=>{
+const RazorpayButton = ({ amount, onSuccess, onFailure })=>{
     _s();
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "RazorpayButton.useEffect": ()=>{
@@ -1135,6 +1135,26 @@ const RazorpayButton = ({ amount })=>{
             })["RazorpayButton.useEffect"];
         }
     }["RazorpayButton.useEffect"], []);
+    // 1. Add a function to verify payment on the backend
+    const verifyPayment = async (paymentId, orderId, signature)=>{
+        try {
+            const res = await fetch("/api/payment/verify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    paymentId,
+                    orderId,
+                    signature
+                })
+            });
+            const data = await res.json();
+            return data.success;
+        } catch (err) {
+            return false;
+        }
+    };
     const handlePayment = async ()=>{
         try {
             const response = await fetch("/api/payment/razorpay", {
@@ -1147,16 +1167,30 @@ const RazorpayButton = ({ amount })=>{
                     currency: "INR"
                 })
             });
+            if (!response.ok) {
+                // Show error if backend did not return 200
+                alert("Payment could not be initiated. Please try again later.");
+                if (onFailure) onFailure();
+                return;
+            }
             const order = await response.json();
             const options = {
-                key: ("TURBOPACK compile-time value", "your_key_id"),
+                key: ("TURBOPACK compile-time value", "rzp_test_JcUfiClYJfisd8"),
                 amount: order.amount,
                 currency: order.currency,
                 name: "Travel App",
                 description: "Payment for your trip",
                 order_id: order.id,
-                handler: function(response) {
-                    alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+                handler: async function(response) {
+                    // Backend verification
+                    const verified = await verifyPayment(response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature);
+                    if (verified) {
+                        if (onSuccess) onSuccess(response);
+                        alert("Payment successful and verified! Payment ID: " + response.razorpay_payment_id);
+                    } else {
+                        if (onFailure) onFailure();
+                        alert("Payment failed verification. Please contact support.");
+                    }
                 },
                 prefill: {
                     name: "Supriya Bharane",
@@ -1165,12 +1199,21 @@ const RazorpayButton = ({ amount })=>{
                 },
                 theme: {
                     color: "#3399cc"
+                },
+                modal: {
+                    ondismiss: function() {
+                        // Call onFailure callback and show a custom message
+                        if (onFailure) onFailure();
+                        alert("Payment cancelled or failed. Please try again.");
+                    }
                 }
             };
             const razorpay = new window.Razorpay(options);
             razorpay.open();
         } catch (error) {
             console.error("Error initiating payment:", error);
+            if (onFailure) onFailure(error);
+            alert("Payment could not be initiated. Please try again later.");
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1182,7 +1225,7 @@ const RazorpayButton = ({ amount })=>{
         ]
     }, void 0, true, {
         fileName: "[project]/components/Payment/RazorpayButton.jsx",
-        lineNumber: 56,
+        lineNumber: 99,
         columnNumber: 5
     }, this);
 };
