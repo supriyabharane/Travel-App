@@ -3,3 +3,5 @@ node_modules/
 # Ignore all zip files
 *.zip
 public/images/*.zip
+# Next.js build output
+.next/
