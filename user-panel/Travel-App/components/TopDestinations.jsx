@@ -121,7 +121,7 @@ export default function TopDestinations({
           <h2 className="sm:text-3xl text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#FF507A] to-[#6C63FF] text-center mb-8 drop-shadow-lg tracking-tight">
             Why Choose Us?
           </h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 bg-gradient-to-r from-blue-50 to-purple-100 p-10 rounded-3xl shadow-2xl border border-blue-100">
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 bg-white p-10 rounded-3xl shadow-2xl border border-blue-100">
             <div className="flex flex-col items-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition group border border-gray-100 hover:-translate-y-2 hover:scale-105 duration-300">
               <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-[#FF507A] to-[#FF914D] mb-5 group-hover:scale-125 transition-transform shadow-lg">
                 <span className="text-3xl">🌏</span>
